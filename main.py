@@ -10,8 +10,9 @@ def addVectors(vector1:tuple,*vectors:tuple):
     return resultantVector
 def toXAndY(magnitude,angle): 
     """
-    Takes a vector in magnitude-angle form and returns it as float x and y components
+    Takes a vector with a given magnitude and angle (in degrees) and returns it as float x and y components
     """
+    #x and y components of a vector with magnitude r and angle θ can be written in the form x=rcosθ and y=rsinθ
     resultantVector = (magnitude*math.cos(radians(angle)),magnitude*math.sin(radians(angle)))
     return resultantVector
 def toAlgebraicForm(vector:tuple):
@@ -19,11 +20,11 @@ def toAlgebraicForm(vector:tuple):
     Takes a vector in component form and outputs algebraic form as a string
     """
     if isinstance(vector[0],float):
-        xComponent = f'{float(vector[0])}i'
+        xComponent = f'{round(float(vector[0]),15)}i'
     else:
         xComponent = f'{int(vector[0])}i'
     if isinstance(vector[1],float):
-        yComponent = f'{float(vector[1]):+}j'
+        yComponent = f'{round(float(vector[1]),15):+}j'
     else:
         yComponent = f'{int(vector[1]):+}j'
     return f'{xComponent} {yComponent}'
