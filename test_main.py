@@ -10,8 +10,8 @@ def test_addVectors():
 def test_subtractVectors():
     assert tuple(round(x,10) for x in subtractVectors((6.14,7.18),(13.14,30.5))) == (-7,-23.32)
 def test_toXAndY():
-    assert toXAndY(3,20) == (3*math.cos(radians(20)),3*math.sin(radians(20)))
-    assert toXAndY(6.11,32.11) == (6.11*math.cos(radians(32.11)),6.11*math.sin(radians(32.11)))
+    assert toXAndY(3,radians(20)) == (3*math.cos(radians(20)),3*math.sin(radians(20)))
+    assert toXAndY(6.11,radians(32.11)) == (6.11*math.cos(radians(32.11)),6.11*math.sin(radians(32.11)))
 def test_toAlgebraicForm():
     assert toAlgebraicForm((5,-6)) == "5i -6j"
     assert toAlgebraicForm((5.2,2.77723)) == "5.2i +2.77723j"

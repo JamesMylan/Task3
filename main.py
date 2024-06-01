@@ -1,5 +1,5 @@
 import math
-from math import radians
+from math import radians, degrees
 def addVectors(vector1:tuple,*vectors:tuple):
     """
     Adds two or more vectors and returns the resultant vector
@@ -10,7 +10,7 @@ def addVectors(vector1:tuple,*vectors:tuple):
     return resultantVector
 def subtractVectors(vector1:tuple,*vectors:tuple):
     """
-    Adds two or more vectors and returns the resultant vector
+    Subtracts two or more vectors and returns the resultant vector
     """
     resultantVector = vector1
     for vector in vectors:
@@ -18,10 +18,10 @@ def subtractVectors(vector1:tuple,*vectors:tuple):
     return resultantVector
 def toXAndY(magnitude,angle): 
     """
-    Takes a vector with a given magnitude and angle (in degrees) and returns it as float x and y components
+    Takes a vector with a given magnitude and angle (in radians) and returns it as float x and y components
     """
     #x and y components of a vector with magnitude r and angle θ can be written in the form x=rcosθ and y=rsinθ
-    resultantVector = (magnitude*math.cos(radians(angle)),magnitude*math.sin(radians(angle)))
+    resultantVector = (magnitude*math.cos(angle),magnitude*math.sin(angle))
     return resultantVector
 def toAlgebraicForm(vector:tuple):
     """

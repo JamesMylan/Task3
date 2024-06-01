@@ -1,7 +1,10 @@
+from main import *
 from graphs import *
-import pygame
 #Change function here
 functionToTest = 'drawVector'
+
+
+
 
 # pygame setup
 pygame.init()
@@ -12,13 +15,14 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 origin = (screenWidth/2,ScreenHeight/2)
-debug = True
+debug = False
 screen.fill("white")
 
 def test_drawVector(surface):
     global screenWidth,ScreenHeight,origin
-    vector=(-200,123)
-    drawVector(surface,"red",origin,vector)
+    vectors=[(200,123),(-200,123),(-200,-123),(200,-123)]
+    for vector in vectors:
+        drawVector(surface,"red",(0,0),vector)
 
 while running:
     eval('test_'+functionToTest+'(screen)')  
