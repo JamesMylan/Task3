@@ -9,16 +9,20 @@ def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = 1):
     pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
 def drawVector(surface: pygame.Surface, color,startPos,vector,width: int = 1):
     '''
-    Draws a vector line with specfied colour and width, from a specified origin
+    Draws a vector arrow with specfied colour and width, from a specified origin
     '''
-    drawLine(surface, color, startPos, vector,width)
-    #Draw arrowlines
+    #Drawing vector line
+    endPos=(startPos[0]+vector[0],startPos[1]+vector[1])
+    drawLine(surface, color, startPos, endPos,width)
+    #Drawing arrowlines
     #Inverse tan (math.atan) only has a range of 180°, rather than 360°. Therefore, vectors in quadrants 2 or 3 must have an angle of pi added to them.
     if vector[0] > 0:
         vectorAngle = math.atan(vector[1]/vector[0])
     else:
         vectorAngle = math.pi + math.atan(vector[1]/vector[0])
-    arrow1=(subtractVectors(vector,toXAndY(50,vectorAngle+math.pi/8)))
-    arrow2=(subtractVectors(vector,toXAndY(50,vectorAngle-math.pi/8)))
-    drawLine(surface,color,arrow1,vector,width)
-    drawLine(surface,color,arrow2,vector,width)
+    #Get coordinates of arrows
+    arrow1=(subtractVectors(endPos,toXAndY(50,vectorAngle+math.pi/8)))
+    arrow2=(subtractVectors(endPos,toXAndY(50,vectorAngle-math.pi/8)))
+    #Draw arrows
+    drawLine(surface,color,arrow1,endPos,width)
+    drawLine(surface,color,arrow2,endPos,width)

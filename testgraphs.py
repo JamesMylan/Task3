@@ -1,7 +1,7 @@
 from main import *
 from graphs import *
 #Change function here
-functionToTest = 'drawVector'
+functionToTest = 'test_drawVector_offCentre'
 
 
 
@@ -18,14 +18,18 @@ origin = (screenWidth/2,ScreenHeight/2)
 debug = False
 screen.fill("white")
 
-def test_drawVector(surface):
+def test_drawVector_testArrows(surface):
     global screenWidth,ScreenHeight,origin
     vectors=[(200,123),(-200,123),(-200,-123),(200,-123)]
     for vector in vectors:
         drawVector(surface,"red",(0,0),vector)
-
+def test_drawVector_offCentre(surface):
+    global screenWidth,ScreenHeight,origin
+    vectors=[(200,123),(-200,123),(-200,-123),(200,-123)]
+    for vector in vectors:
+        drawVector(surface,"red",(-50,-50),vector)
 while running:
-    eval('test_'+functionToTest+'(screen)')  
+    eval(functionToTest+'(screen)')  
 
     if debug:
         print(pygame.mouse.get_pos())
