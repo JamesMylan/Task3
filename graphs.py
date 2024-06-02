@@ -63,12 +63,11 @@ def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float
     #Drawing arrowlines
     drawLine(surface,color,vectorArrowCoordinates[1],vectorArrowCoordinates[0],width)
     drawLine(surface,color,vectorArrowCoordinates[2],vectorArrowCoordinates[0],width)
-def scaleVectorAddition(screenWidth,*vectors):
+def scaleVectorAddition(screenWidth,startPos,*vectors):
     """
     Calculates the scale factor needed to fit the addition of multiple vectors inside of screenWidth
     Returns scale factor to apply to all vectors
     """
-    startPos = (0,0)
     endPoses = []
     for vector in vectors:
         endPos = getVectorArrowCoordinates(startPos,vector)[0]
@@ -77,20 +76,20 @@ def scaleVectorAddition(screenWidth,*vectors):
     largestCoordinate = getLargestCoordinateInVectors(*endPoses)
     scale = largestCoordinate/(0.9*screenWidth/2)
     return scale    
-def drawAdditionOfVectors(surface: pygame.Surface, arrowLength: float = -1, *vectors):
-    scale = scaleVectorAddition(surface.get_width(),*vectors)
-    startPos = (0,0)
+def drawAdditionOfVectors(surface: pygame.Surface, startPos, arrowLength: float = -1, *vectors):
+    scale = scaleVectorAddition(surface.get_width(),startPos,*vectors)
+    nextStartPos = startPos
     colours = ["red","blue","green","purple","brown","orange","plum","aqua","burlywood","gold"]
     for index, vector in enumerate(vectors):
         vector = tuple(x/scale for x in vector)
-        endPos = getVectorArrowCoordinates(startPos,vector)[0]
-        drawVector(surface,colours[index % len(colours)],startPos,vector,arrowLength)
-        startPos = endPos
+        endPos = getVectorArrowCoordinates(nextStartPos,vector)[0]
+        drawVector(surface,colours[index % len(colours)],nextStartPos,vector,arrowLength)
+        nextStartPos = endPos
     resultantVector = addVectors(*vectors)
-    drawVector(surface,"black",(0,0),tuple(x/scale for x in resultantVector))
+    drawVector(surface,"black",startPos,tuple(x/scale for x in resultantVector))
 def drawAxes(surface: pygame.Surface, position, width: int = 1):
-    drawLine(surface,"gray",(position[0],0),(surface.get_width()/2,0),width)
-    drawLine(surface,"gray",(position[0],0),(-surface.get_width()/2,0),width)
-    drawLine(surface,"gray",(0,position[1]),(0,surface.get_width()/2),width)
-    drawLine(surface,"gray",(0,position[1]),(0,-surface.get_width()/2),width)
+    drawLine(surface,"gray",(position[0],0),(position[0],surface.get_width()/2),width)
+    drawLine(surface,"gray",(position[0],0),(position[0],-surface.get_width()/2,width))
+    drawLine(surface,"gray",(0,position[1]),(surface.get_width()/2,position[1]),width)
+    drawLine(surface,"gray",(0,position[1]),(-surface.get_width()/2,position[1]),width)
     

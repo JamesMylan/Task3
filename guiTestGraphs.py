@@ -31,7 +31,7 @@ def test_drawVector_offCentre(surface):
 def test_drawAdditionOfVectors(surface):
     global screenWidth,ScreenHeight,origin
     vectors=(2,8),(13,4),(-2,1),(-4,4),(2,-14.5)
-    drawAdditionOfVectors(surface,15,*vectors)
+    drawAdditionOfVectors(surface,(0,0),15,*vectors)
 def test_drawAxes(surface):
     global screenWidth,ScreenHeight,origin
     drawAxes(surface,(0,0))
