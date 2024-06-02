@@ -9,18 +9,19 @@ def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = 1):
     pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
 def scaleVector(vector,screenWidth):
     """
-    Scales a vector to fit within the screen
+    Scales a vector to fit within 90% of the screen
     """
-    magnitude = getMagnitude(vector)
-    if magnitude > screenWidth/2:
-        scale = (magnitude)/(screenWidth/2)
-        vector = tuple(x/scale for x in vector)
-    return vector
-def getVectorArrowCoordinates(startPos,vector,arrowLength):
+    positiveVector = tuple(abs(x) for x in vector)
+    scale = max(positiveVector)/(0.9*screenWidth/2)
+    resultantVector = tuple(x/scale for x in vector)
+    return resultantVector
+def getVectorArrowCoordinates(startPos,vector,arrowLength: float = -1):
     """
     Given a start position and a position vector, it will calulate the cooridinates of a vector arrow on a plane
     Returns the ending coordinate of the vector, and the coordinates of the arrows of the vector
     """
+    if arrowLength == -1:
+        arrowLength = getMagnitude(vector)/8
     endPos=(startPos[0]+vector[0],startPos[1]+vector[1])
     #Inverse tan (math.atan) only has a range of 180°, rather than 360°. Therefore, vectors in quadrants 2 or 3 must have an angle of pi added to them.
     if vector[0] > 0:
@@ -42,11 +43,18 @@ def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float
     """
     Draws a vector arrow with specfied colour and width, from a specified origin
     """
-    if arrowLength == -1:
-        arrowLength = getMagnitude(vector)/8
     vectorArrowCoordinates = getVectorArrowCoordinates(startPos,vector,arrowLength)
     #Drawing vector line
     drawLine(surface, color, startPos, vectorArrowCoordinates[0],width)
     #Drawing arrowlines
     drawLine(surface,color,vectorArrowCoordinates[1],vectorArrowCoordinates[0],width)
     drawLine(surface,color,vectorArrowCoordinates[2],vectorArrowCoordinates[0],width)
+def scaleVectorAddition(screenWidth,*vectors):
+    resultantVector = addVectors(*vectors)
+    startPos = (0,0)
+    for vector in vectors:
+        endPos = getVectorArrowCoordinates(startPos,vector)[0]
+        startPos = endPos
+    scale = max(resultantVector)/max(scaleVector(resultantVector,screenWidth))
+    return scale
+    

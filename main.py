@@ -28,11 +28,11 @@ def toAlgebraicForm(vector:tuple):
     Takes a vector in component form and outputs algebraic form as a string
     """
     if isinstance(vector[0],float):
-        xComponent = f'{round(float(vector[0]),15)}i'
+        xComponent = f'{round(float(vector[0]),10)}i'
     else:
         xComponent = f'{int(vector[0])}i'
     if isinstance(vector[1],float):
-        yComponent = f'{round(float(vector[1]),15):+}j'
+        yComponent = f'{round(float(vector[1]),10):+}j'
     else:
         yComponent = f'{int(vector[1]):+}j'
     return f'{xComponent} {yComponent}'
