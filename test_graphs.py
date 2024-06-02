@@ -14,3 +14,5 @@ def test_scaleVector():
     assert scaleVector((50,50),500) == (225,225)
 def test_scaleVectorAddition():
     assert round(scaleVectorAddition(500,(0,200),(0,4000)),10) == round(56/3,10)
+def test_getLargestCoordinateInVectors():
+    assert getLargestCoordinateInVectors((23,-28),(1,0.2)) == 28

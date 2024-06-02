@@ -9,12 +9,24 @@ def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = 1):
     pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
 def scaleVector(vector,screenWidth):
     """
-    Scales a vector to fit within 90% of the screen
+    Scales a vector to fit within 90% of the screenWidth
+    Returns shrunken or enlarged vector tuple
     """
+    #Get the abosulute value of each coordinate
     positiveVector = tuple(abs(x) for x in vector)
     scale = max(positiveVector)/(0.9*screenWidth/2)
     resultantVector = tuple(x/scale for x in vector)
+    #Returns shrunken or enlarged vector
     return resultantVector
+def getLargestCoordinateInVectors(*vectors: tuple):
+    """
+    Returns the absolute value of the largest coordinate by magnitude
+    """
+    absoluteVectors = []
+    for vector in vectors:
+        for coordinate in vector:
+            absoluteVectors.append(abs(coordinate))
+    return max(absoluteVectors)
 def getVectorArrowCoordinates(startPos,vector,arrowLength: float = -1):
     """
     Given a start position and a position vector, it will calulate the cooridinates of a vector arrow on a plane
@@ -50,11 +62,16 @@ def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float
     drawLine(surface,color,vectorArrowCoordinates[1],vectorArrowCoordinates[0],width)
     drawLine(surface,color,vectorArrowCoordinates[2],vectorArrowCoordinates[0],width)
 def scaleVectorAddition(screenWidth,*vectors):
-    resultantVector = addVectors(*vectors)
+    """
+    Calculates the scale factor needed to fit the addition of multiple vectors inside of screenWidth
+    Returns scale factor to apply to all vectors
+    """
     startPos = (0,0)
+    endPoses = []
     for vector in vectors:
         endPos = getVectorArrowCoordinates(startPos,vector)[0]
+        endPoses.append(endPos)
         startPos = endPos
-    scale = max(resultantVector)/max(scaleVector(resultantVector,screenWidth))
-    return scale
-    
+    largestCoordinate = getLargestCoordinateInVectors(*endPoses)
+    scale = largestCoordinate/(0.9*screenWidth/2)
+    return scale    

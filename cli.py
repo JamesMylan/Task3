@@ -5,7 +5,6 @@ vectors=[]
 numberOfVectors=input("Number of vectors to add: ")
 for i in range(int(numberOfVectors)):
     vectors.append(tuple(float(x) for x in input("Enter vector separted by spaces: ").split()))
-    print(vectors)
 resultantVector = addVectors(*vectors)
 if resultantVector == (0,0):
     print("Result is the zero vector")
@@ -15,19 +14,19 @@ else:
         # pygame setup
         pygame.init()
         screenWidth = 500
-        ScreenHeight = 500
-        screen = pygame.display.set_mode((screenWidth, ScreenHeight))
+        screenHeight = screenWidth
+        screen = pygame.display.set_mode((screenWidth, screenHeight))
         clock = pygame.time.Clock()
         running = True
         dt = 0
         while running:
             screen.fill("white")
-            scale = scaleVectorAddition(500,*vectors)
+            scale = scaleVectorAddition(screenWidth,*vectors)
             startPos = (0,0)
             for vector in vectors:
                 vector = tuple(x/scale for x in vector)
                 endPos = getVectorArrowCoordinates(startPos,vector)[0]
-                drawVector(screen,"red",startPos,vector)
+                drawVector(screen,"red",startPos,vector,25)
                 startPos = endPos
             drawVector(screen,"black",(0,0),tuple(x/scale for x in resultantVector))
             # poll for events
