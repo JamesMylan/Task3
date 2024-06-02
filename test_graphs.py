@@ -1,7 +1,7 @@
 from graphs import *
 import pytest
 def test_getVectorArrowCoordinates():
-    #test random vector
+    #test a vector
     assert getVectorArrowCoordinates((20,20),(30,30),50) == ((50,50),(50-50*math.cos(math.pi/4+math.pi/8),50-50*math.sin(math.pi/4+math.pi/8)),(50-50*math.cos(math.pi/4-math.pi/8),50-50*math.sin(math.pi/4-math.pi/8)))
     #test null vector case
     with pytest.raises(TypeError):
@@ -16,3 +16,6 @@ def test_scaleVectorAddition():
     assert round(scaleVectorAddition(500,(0,200),(0,4000)),10) == round(56/3,10)
 def test_getLargestCoordinateInVectors():
     assert getLargestCoordinateInVectors((23,-28),(1,0.2)) == 28
+def test_drawVector():
+    #Should not attempt to draw null vector
+    assert drawVector("whatever","red",(0,0),(0,0)) == None

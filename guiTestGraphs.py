@@ -1,7 +1,7 @@
 from main import *
 from graphs import *
 #Change function here
-functionToTest = 'test_drawVector_offCentre'
+functionToTest = 'test_drawAdditionOfVectors'
 
 
 
@@ -28,6 +28,14 @@ def test_drawVector_offCentre(surface):
     vectors=[(200,123),(-200,123),(-200,-123),(200,-123)]
     for vector in vectors:
         drawVector(surface,"red",(-50,-50),vector)
+def test_drawAdditionOfVectors(surface):
+    global screenWidth,ScreenHeight,origin
+    vectors=(200,123),(-200,12.3),(-200,-1230),(200,-123)
+    drawAdditionOfVectors(surface,-1,*vectors)
+
+
+
+
 while running:
     eval(functionToTest+'(screen)')  
 

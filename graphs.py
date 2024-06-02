@@ -55,6 +55,8 @@ def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float
     """
     Draws a vector arrow with specfied colour and width, from a specified origin
     """
+    if vector == (0,0):
+        return None
     vectorArrowCoordinates = getVectorArrowCoordinates(startPos,vector,arrowLength)
     #Drawing vector line
     drawLine(surface, color, startPos, vectorArrowCoordinates[0],width)
@@ -75,3 +77,14 @@ def scaleVectorAddition(screenWidth,*vectors):
     largestCoordinate = getLargestCoordinateInVectors(*endPoses)
     scale = largestCoordinate/(0.9*screenWidth/2)
     return scale    
+def drawAdditionOfVectors(surface: pygame.Surface, arrowLength: float = -1, *vectors):
+    scale = scaleVectorAddition(surface.get_width(),*vectors)
+    startPos = (0,0)
+    for vector in vectors:
+        vector = tuple(x/scale for x in vector)
+        endPos = getVectorArrowCoordinates(startPos,vector)[0]
+        drawVector(surface,"red",startPos,vector,arrowLength)
+        startPos = endPos
+    resultantVector = addVectors(*vectors)
+    drawVector(surface,"black",(0,0),tuple(x/scale for x in resultantVector))
+    
