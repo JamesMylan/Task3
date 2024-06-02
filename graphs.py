@@ -7,7 +7,7 @@ def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = 1):
     origin=(surface.get_width()/2,surface.get_height()/2)
     #Pygame y coordinates increase down the screen, rather than decrease, so the y component of the vector must be subtracted
     pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
-def getVectorArrowCoordinates(startPos,vector):
+def getVectorArrowCoordinates(startPos,vector,arrowLength):
     """
     Given a start position and a position vector, it will calulate the cooridinates of a vector arrow on a plane
     Returns the ending coordinate of the vector, and the coordinates of the arrows of the vector
@@ -26,14 +26,16 @@ def getVectorArrowCoordinates(startPos,vector):
     else: 
         vectorAngle = math.pi + math.atan(vector[1]/vector[0])
     #Get coordinates of arrows
-    arrow1=(subtractVectors(endPos,toXAndY(50,vectorAngle+math.pi/8)))
-    arrow2=(subtractVectors(endPos,toXAndY(50,vectorAngle-math.pi/8)))
+    arrow1=(subtractVectors(endPos,toXAndY(arrowLength,vectorAngle+math.pi/8)))
+    arrow2=(subtractVectors(endPos,toXAndY(arrowLength,vectorAngle-math.pi/8)))
     return endPos,arrow1,arrow2
-def drawVector(surface: pygame.Surface, color,startPos,vector,width: int = 1):
+def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float = -1,width: int = 1):
     """
     Draws a vector arrow with specfied colour and width, from a specified origin
     """
-    vectorArrowCoordinates = getVectorArrowCoordinates(startPos,vector)
+    if arrowLength == -1:
+        arrowLength = getMagnitude(vector)/8
+    vectorArrowCoordinates = getVectorArrowCoordinates(startPos,vector,arrowLength)
     #Drawing vector line
     drawLine(surface, color, startPos, vectorArrowCoordinates[0],width)
     #Drawing arrowlines

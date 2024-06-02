@@ -36,3 +36,9 @@ def toAlgebraicForm(vector:tuple):
     else:
         yComponent = f'{int(vector[1]):+}j'
     return f'{xComponent} {yComponent}'
+def getMagnitude(vector: tuple):
+    """
+    Calculates magnitude of a single vector
+    """
+    magnitude = math.sqrt((vector[0])**2+(vector[1])**2)
+    return magnitude

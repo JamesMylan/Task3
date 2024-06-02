@@ -17,4 +17,7 @@ def test_toAlgebraicForm():
     assert toAlgebraicForm((5.2,2.77723)) == "5.2i +2.77723j"
 def test_intermodules():
     assert toAlgebraicForm(addVectors((2,-3),(-0.2212738,1),(2,1.1))) == "3.7787262i -0.9j"
+def test_getMagnitude():
+    assert getMagnitude((50,50)) == 50*math.sqrt(2)
+    assert getMagnitude((0,100)) == 100
 
