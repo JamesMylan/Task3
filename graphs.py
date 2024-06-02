@@ -80,11 +80,17 @@ def scaleVectorAddition(screenWidth,*vectors):
 def drawAdditionOfVectors(surface: pygame.Surface, arrowLength: float = -1, *vectors):
     scale = scaleVectorAddition(surface.get_width(),*vectors)
     startPos = (0,0)
-    for vector in vectors:
+    colours = ["red","blue","green","purple","brown","orange","plum","aqua","burlywood","gold"]
+    for index, vector in enumerate(vectors):
         vector = tuple(x/scale for x in vector)
         endPos = getVectorArrowCoordinates(startPos,vector)[0]
-        drawVector(surface,"red",startPos,vector,arrowLength)
+        drawVector(surface,colours[index % len(colours)],startPos,vector,arrowLength)
         startPos = endPos
     resultantVector = addVectors(*vectors)
     drawVector(surface,"black",(0,0),tuple(x/scale for x in resultantVector))
+def drawAxes(surface: pygame.Surface, position, width: int = 1):
+    drawLine(surface,"gray",(position[0],0),(surface.get_width()/2,0),width)
+    drawLine(surface,"gray",(position[0],0),(-surface.get_width()/2,0),width)
+    drawLine(surface,"gray",(0,position[1]),(0,surface.get_width()/2),width)
+    drawLine(surface,"gray",(0,position[1]),(0,-surface.get_width()/2),width)
     

@@ -1,7 +1,7 @@
 from main import *
 from graphs import *
 #Change function here
-functionToTest = 'test_drawAdditionOfVectors'
+functionToTest = 'test_drawAxes'
 
 
 
@@ -30,9 +30,11 @@ def test_drawVector_offCentre(surface):
         drawVector(surface,"red",(-50,-50),vector)
 def test_drawAdditionOfVectors(surface):
     global screenWidth,ScreenHeight,origin
-    vectors=(200,123),(-200,12.3),(-200,-1230),(200,-123)
-    drawAdditionOfVectors(surface,-1,*vectors)
-
+    vectors=(2,8),(13,4),(-2,1),(-4,4),(2,-14.5)
+    drawAdditionOfVectors(surface,15,*vectors)
+def test_drawAxes(surface):
+    global screenWidth,ScreenHeight,origin
+    drawAxes(surface,(0,0))
 
 
 
