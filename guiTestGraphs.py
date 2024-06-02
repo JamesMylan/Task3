@@ -9,12 +9,12 @@ functionToTest = 'test_drawVector_offCentre'
 # pygame setup
 pygame.init()
 screenWidth = 500
-ScreenHeight = 500
-screen = pygame.display.set_mode((screenWidth, ScreenHeight))
+screenHeight = screenWidth
+screen = pygame.display.set_mode((screenWidth, screenHeight))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-origin = (screenWidth/2,ScreenHeight/2)
+origin = (screenWidth/2,screenHeight/2)
 debug = False
 screen.fill("white")
 

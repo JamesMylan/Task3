@@ -8,3 +8,5 @@ def test_getVectorArrowCoordinates():
         getVectorArrowCoordinates((20,300),(0,0),50)    
     #test pi/2 and -pi/2 angle case
     assert getVectorArrowCoordinates((20,20),(0,30),50) == ((20,50),(20-50*math.cos(math.pi/2+math.pi/8),50-50*math.sin(math.pi/2+math.pi/8)),(20-50*math.cos(math.pi/2-math.pi/8),50-50*math.sin(math.pi/2-math.pi/8)))
+def test_scaleVector():
+    assert scaleVector((0,5000),500) == (0,250)

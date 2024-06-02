@@ -7,6 +7,15 @@ def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = 1):
     origin=(surface.get_width()/2,surface.get_height()/2)
     #Pygame y coordinates increase down the screen, rather than decrease, so the y component of the vector must be subtracted
     pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
+def scaleVector(vector,screenWidth):
+    """
+    Scales a vector to fit within the screen
+    """
+    magnitude = getMagnitude(vector)
+    if magnitude > screenWidth/2:
+        scale = (magnitude)/(screenWidth/2)
+        vector = tuple(x/scale for x in vector)
+    return vector
 def getVectorArrowCoordinates(startPos,vector,arrowLength):
     """
     Given a start position and a position vector, it will calulate the cooridinates of a vector arrow on a plane
