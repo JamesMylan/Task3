@@ -1,12 +1,16 @@
 import pygame, math
 from main import *
-def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = 1):
+colours = ["red","blue","green","purple","brown","orange","plum","aqua","burlywood","gold"]
+def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = -1):
     """
     Draws a line with postition relative to the centre of the screen
     """
     origin=(surface.get_width()/2,surface.get_height()/2)
     #Pygame y coordinates increase down the screen, rather than decrease, so the y component of the vector must be subtracted
-    pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
+    if width == -1:
+        pygame.draw.aaline(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]))
+    else:
+        pygame.draw.line(surface, color, (origin[0]+startPos[0], origin[1]-startPos[1]),(origin[0]+endPos[0], origin[1]-endPos[1]),width)
 def scaleVector(vector,screenWidth):
     """
     Scales a vector to fit within 90% of the screenWidth
@@ -51,7 +55,7 @@ def getVectorArrowCoordinates(startPos,vector,arrowLength: float = -1):
     arrow1=(subtractVectors(endPos,toXAndY(arrowLength,vectorAngle+math.pi/8)))
     arrow2=(subtractVectors(endPos,toXAndY(arrowLength,vectorAngle-math.pi/8)))
     return endPos,arrow1,arrow2
-def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float = -1,width: int = 1):
+def drawVector(surface: pygame.Surface, color,startPos,vector,arrowLength: float = -1,width: int = -1):
     """
     Draws a vector arrow with specfied colour and width, from a specified origin
     """
@@ -77,9 +81,12 @@ def scaleVectorAddition(screenWidth,startPos,*vectors):
     scale = largestCoordinate/(0.9*screenWidth/2)
     return scale    
 def drawAdditionOfVectors(surface: pygame.Surface, startPos, arrowLength: float = -1, *vectors):
+    """
+    Draws each vector onto a surface, as well as calculating the resultant vector and then drawing it
+    """
+    global colours
     scale = scaleVectorAddition(surface.get_width(),startPos,*vectors)
     nextStartPos = startPos
-    colours = ["red","blue","green","purple","brown","orange","plum","aqua","burlywood","gold"]
     for index, vector in enumerate(vectors):
         vector = tuple(x/scale for x in vector)
         endPos = getVectorArrowCoordinates(nextStartPos,vector)[0]
@@ -88,8 +95,47 @@ def drawAdditionOfVectors(surface: pygame.Surface, startPos, arrowLength: float 
     resultantVector = addVectors(*vectors)
     drawVector(surface,"black",startPos,tuple(x/scale for x in resultantVector))
 def drawAxes(surface: pygame.Surface, position, width: int = 1):
-    drawLine(surface,"gray",(position[0],0),(position[0],surface.get_width()/2),width)
-    drawLine(surface,"gray",(position[0],0),(position[0],-surface.get_width()/2),width)
-    drawLine(surface,"gray",(0,position[1]),(surface.get_width()/2,position[1]),width)
-    drawLine(surface,"gray",(0,position[1]),(-surface.get_width()/2,position[1]),width)
-    
+    """
+    Draws the x and y axes on a surface with a specified centre
+    """
+    color = "black"
+    drawLine(surface,color,(position[0],0),(position[0],surface.get_width()/2),width)
+    drawLine(surface,color,(position[0],0),(position[0],-surface.get_width()/2),width)
+    drawLine(surface,color,(0,position[1]),(surface.get_width()/2,position[1]),width)
+    drawLine(surface,color,(0,position[1]),(-surface.get_width()/2,position[1]),width)
+def drawGridLines(surface: pygame.Surface,density,scale: float = 1/50):
+    """
+    Draws the number of major grid lines specfied by density, and writes the scale at the lines
+    """
+    surfaceWidth = surface.get_width()
+    surfaceHeight = surface.get_height()
+    for i in range(density):
+        xPos=(-surfaceWidth/2)+i*surfaceWidth/(density-1)
+        yPos=(-surfaceHeight/2)+i*surfaceHeight/(density-1)
+        if xPos not in (0,surfaceWidth/2,-surfaceWidth/2):
+            drawLine(surface,"gray",(xPos,surfaceHeight/2),(xPos,-surfaceHeight/2),2)
+        if xPos not in (0,surfaceHeight/2,-surfaceHeight/2):
+            drawLine(surface,"gray",(surfaceWidth/2,yPos),(-surfaceWidth/2,yPos),2)
+    drawGridScale(surface,density,scale)
+def drawGridScale(surface: pygame.Surface, density, scale: float=1/50):
+    """
+    Draws the scale at major grid lines
+    """
+    surfaceWidth = surface.get_width()
+    surfaceHeight = surface.get_height()
+    for i in range(density):
+        xPos=(-surfaceWidth/2)+i*surfaceWidth/(density-1)
+        yPos=(-surfaceHeight/2)+i*surfaceHeight/(density-1)
+        if xPos not in (0,surfaceWidth/2,-surfaceWidth/2):
+            drawText(surface,str(round(xPos*scale,1)),(xPos+surfaceWidth/2,(surfaceWidth/2)+10),"blue",10)
+        if xPos not in (0,surfaceHeight/2,-surfaceHeight/2):
+            drawText(surface,str(round(-yPos*scale,1)),((surfaceHeight/2)-15,yPos+surfaceHeight/2),"blue",10)
+def drawText(surface: pygame.Surface, text: str, centre, color, fontSize: int = 25):
+    """
+    Draws text with specified color and font size. PyGame coordinate system is used rather than cartesian coordinates. (The point (0,0) gives the top-left corner rather than the centre)
+    """
+    arialFont = pygame.font.SysFont('Arial',fontSize)
+    text = arialFont.render(text, True, color)
+    textRect = text.get_rect()
+    textRect.center = centre
+    surface.blit(text,textRect)

@@ -1,7 +1,7 @@
 from main import *
 from graphs import *
 #Change function here
-functionToTest = 'test_drawAxes'
+functionToTest = 'test_additionOfVectorsWithAxes'
 
 
 
@@ -35,6 +35,13 @@ def test_drawAdditionOfVectors(surface):
 def test_drawAxes(surface):
     global screenWidth,ScreenHeight,origin
     drawAxes(surface,(0,0))
+def test_additionOfVectorsWithAxes(surface):
+    global screenWidth,ScreenHeight,origin
+    vectors=(2,8),(13,4),(-2,1),(-4,4),(2,-14.5)
+    drawAxes(surface,(0,0),2)
+    drawAdditionOfVectors(surface,(0,0),15,*vectors)
+    scale = scaleVectorAddition(screenWidth,(0,0),*vectors)
+    drawGridLines(surface,11,scale)
 
 
 
