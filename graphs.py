@@ -89,7 +89,7 @@ def drawAdditionOfVectors(surface: pygame.Surface, startPos, arrowLength: float 
     drawVector(surface,"black",startPos,tuple(x/scale for x in resultantVector))
 def drawAxes(surface: pygame.Surface, position, width: int = 1):
     drawLine(surface,"gray",(position[0],0),(position[0],surface.get_width()/2),width)
-    drawLine(surface,"gray",(position[0],0),(position[0],-surface.get_width()/2,width))
+    drawLine(surface,"gray",(position[0],0),(position[0],-surface.get_width()/2),width)
     drawLine(surface,"gray",(0,position[1]),(surface.get_width()/2,position[1]),width)
     drawLine(surface,"gray",(0,position[1]),(-surface.get_width()/2,position[1]),width)
     
