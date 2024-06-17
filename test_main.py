@@ -20,4 +20,15 @@ def test_intermodules():
 def test_getMagnitude():
     assert getMagnitude((50,50)) == 50*math.sqrt(2)
     assert getMagnitude((0,100)) == 100
-
+def test_getVectorAngle():
+    assert getVectorAngle((100,100)) == math.pi/4
+    assert getVectorAngle((-20,20)) == 3*math.pi/4
+    assert getVectorAngle((-20,-20)) == -3*math.pi/4
+    assert getVectorAngle((20,-20)) == -math.pi/4
+    assert getVectorAngle((20,0)) == 0
+    assert getVectorAngle((0,20)) == math.pi/2
+    assert getVectorAngle((-20,0)) == math.pi
+    assert getVectorAngle((0,-20)) == -math.pi/2
+def test_toMagnitudeAndAngleForm():
+    assert toMagnitudeAndAngleForm((100,100)) == (math.sqrt((100)**2+(100)**2),math.pi/4)
+    assert toMagnitudeAndAngleForm((-20,-20)) == (math.sqrt((-20)**2+(-20)**2),-3*math.pi/4)

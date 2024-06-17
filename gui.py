@@ -30,7 +30,8 @@ debug = False
 numberOfTextEntrys = 6
 xVectorTextEntrys = []
 yVectorTextEntrys = []
-
+magnitudeTextEntrys = []
+angleTextEntrys = []
 #Create numerous text boxes for vector coordinate input
 for i in range(numberOfTextEntrys):
     xVectorTextEntry = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
@@ -41,13 +42,28 @@ for i in range(numberOfTextEntrys):
     xVectorTextEntrys.append(xVectorTextEntry)
 for i in range(numberOfTextEntrys):
     yVectorTextEntry = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
-        relative_rect=pygame.Rect((250+150, 50 + i * 30), (100, 30)),
+        relative_rect=pygame.Rect((250+110, 50 + i * 30), (100, 30)),
         manager=manager
     )
     yVectorTextEntrys.append(yVectorTextEntry)
+for i in range(numberOfTextEntrys):
+    magnitudeTextEntry = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
+        relative_rect=pygame.Rect((250+110+125, 50 + i * 30), (100, 30)),
+        manager=manager
+    )
+    magnitudeTextEntrys.append(magnitudeTextEntry)
+for i in range(numberOfTextEntrys):
+    angleTextEntry = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
+        relative_rect=pygame.Rect((250+125+110*2, 50 + i * 30), (100, 30)),
+        manager=manager
+    )
+    angleTextEntrys.append(angleTextEntry)
 #Write above the entry boxes
-drawText(background,"x",(xVectorTextEntrys[0].rect.centerx,xVectorTextEntrys[0].rect.top-20),"black")
-drawText(background,"y",(yVectorTextEntrys[0].rect.centerx,yVectorTextEntrys[0].rect.top-20),"black") 
+drawText(background,"x",(xVectorTextEntrys[0].rect.centerx,xVectorTextEntrys[0].rect.top-10),"black",15)
+drawText(background,"y",(yVectorTextEntrys[0].rect.centerx,yVectorTextEntrys[0].rect.top-10),"black",15) 
+drawText(background,"Magnitude",(magnitudeTextEntrys[0].rect.centerx,magnitudeTextEntrys[0].rect.top-10),"black",15)
+drawText(background,"Angle (Degrees)",(angleTextEntrys[0].rect.centerx,angleTextEntrys[0].rect.top-10),"black",15)
+
 
 
 
@@ -62,14 +78,28 @@ while is_running:
             drawAxes(graph,(0,0),2)
             vectors = []
             #Get user's input values
-            for i in range(numberOfTextEntrys):
-                #Handle empty boxes
-                try:
-                    vector = (float(xVectorTextEntrys[i].get_text()),float(yVectorTextEntrys[i].get_text()))
-                    if vector != (0,0):
-                        vectors.append((float(xVectorTextEntrys[i].get_text()),float(yVectorTextEntrys[i].get_text())))
-                except ValueError:
-                    pass
+            if (event.ui_element in xVectorTextEntrys) or (event.ui_element in yVectorTextEntrys):
+                for i in range(numberOfTextEntrys):
+                    #Handle empty boxes
+                    try:
+                        vector = (float(xVectorTextEntrys[i].get_text()),float(yVectorTextEntrys[i].get_text()))
+                        if vector != (0,0):
+                            magnitudeTextEntrys[i].set_text(str(round(getMagnitude(vector),4)))
+                            angleTextEntrys[i].set_text(str(round(degrees(getVectorAngle(vector)),4)))
+                            vectors.append(vector)
+                    except ValueError:
+                        pass
+            elif (event.ui_element in magnitudeTextEntrys) or (event.ui_element in angleTextEntrys):
+                for i in range(numberOfTextEntrys):
+                    #Handle empty boxes
+                    try:
+                        vector = toXAndY(float(magnitudeTextEntrys[i].get_text()),radians(float(angleTextEntrys[i].get_text())))
+                        if vector != (0,0):
+                            xVectorTextEntrys[i].set_text(str((round(vector[0],4))))
+                            yVectorTextEntrys[i].set_text(str((round(vector[1],4))))
+                            vectors.append(vector)
+                    except ValueError:
+                        pass
             if vectors != []:
                 scale = scaleVectorAddition(graph.get_width(),(0,0),*vectors)
                 drawGridLines(graph,9,scale)

@@ -39,18 +39,7 @@ def getVectorArrowCoordinates(startPos,vector,arrowLength: float = -1):
     if arrowLength == -1:
         arrowLength = getMagnitude(vector)/8
     endPos=(startPos[0]+vector[0],startPos[1]+vector[1])
-    #Inverse tan (math.atan) only has a range of 180°, rather than 360°. Therefore, vectors in quadrants 2 or 3 must have an angle of pi added to them.
-    if vector[0] > 0:
-        vectorAngle = math.atan(vector[1]/vector[0])
-    elif vector[0] == 0:
-        if vector[1] > 0:
-            vectorAngle = math.pi/2
-        elif vector[1] < 0:
-            vectorAngle = -math.pi/2
-        else:
-            vectorAngle = None
-    else: 
-        vectorAngle = math.pi + math.atan(vector[1]/vector[0])
+    vectorAngle=getVectorAngle(vector)
     #Get coordinates of arrows
     arrow1=(subtractVectors(endPos,toXAndY(arrowLength,vectorAngle+math.pi/8)))
     arrow2=(subtractVectors(endPos,toXAndY(arrowLength,vectorAngle-math.pi/8)))
