@@ -22,7 +22,7 @@ else:
         dt = 0
         while running:
             screen.fill("white")
-            drawAdditionOfVectors(screen,-1,*vectors)
+            drawAdditionOfVectors(screen,(0,0),-1,*vectors)
             # poll for events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

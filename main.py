@@ -22,17 +22,17 @@ def toXAndY(magnitude,angle):
     """
     #x and y components of a vector with magnitude r and angle θ can be written in the form x=rcosθ and y=rsinθ
     resultantVector = (magnitude*math.cos(angle),magnitude*math.sin(angle))
-    return resultantVector
-def toAlgebraicForm(vector:tuple):
+    return resultantVector 
+def toAlgebraicForm(vector:tuple, nDigits: int = 10):
     """
     Takes a vector in component form and outputs algebraic form as a string
     """
     if isinstance(vector[0],float):
-        xComponent = f'{round(float(vector[0]),10)}i'
+        xComponent = f'{round(float(vector[0]),nDigits)}i'
     else:
         xComponent = f'{int(vector[0])}i'
     if isinstance(vector[1],float):
-        yComponent = f'{round(float(vector[1]),10):+}j'
+        yComponent = f'{round(float(vector[1]),nDigits):+}j'
     else:
         yComponent = f'{int(vector[1]):+}j'
     return f'{xComponent} {yComponent}'

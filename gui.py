@@ -26,19 +26,20 @@ manager = pygame_gui.UIManager((screenWidth, screenHeight))
 clock = pygame.time.Clock()
 is_running = True
 debug = False
+showNegativeAngles = False
 
 numberOfTextEntrys = 6
 xVectorTextEntrys = []
 yVectorTextEntrys = []
 magnitudeTextEntrys = []
 angleTextEntrys = []
+resultantVector = ""
 #Create numerous text boxes for vector coordinate input
 for i in range(numberOfTextEntrys):
     xVectorTextEntry = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
         relative_rect=pygame.Rect((250, 50 + i * 30), (100, 30)),
         manager=manager
     )
-    drawText(background,"Vector "+str(i+1),(xVectorTextEntry.rect.left-50,xVectorTextEntry.rect.centery),colours[i % len(colours)])
     xVectorTextEntrys.append(xVectorTextEntry)
 for i in range(numberOfTextEntrys):
     yVectorTextEntry = pygame_gui.elements.ui_text_entry_line.UITextEntryLine(
@@ -58,11 +59,7 @@ for i in range(numberOfTextEntrys):
         manager=manager
     )
     angleTextEntrys.append(angleTextEntry)
-#Write above the entry boxes
-drawText(background,"x",(xVectorTextEntrys[0].rect.centerx,xVectorTextEntrys[0].rect.top-10),"black",15)
-drawText(background,"y",(yVectorTextEntrys[0].rect.centerx,yVectorTextEntrys[0].rect.top-10),"black",15) 
-drawText(background,"Magnitude",(magnitudeTextEntrys[0].rect.centerx,magnitudeTextEntrys[0].rect.top-10),"black",15)
-drawText(background,"Angle (Degrees)",(angleTextEntrys[0].rect.centerx,angleTextEntrys[0].rect.top-10),"black",15)
+
 
 
 
@@ -70,6 +67,15 @@ drawText(background,"Angle (Degrees)",(angleTextEntrys[0].rect.centerx,angleText
 while is_running:
     #Limit FPS to 60
     time_delta = clock.tick(60)/1000
+    background.fill(pygame.Color('#FFFFFF'))
+    drawText(background,"Resultant Vector:",(80,250),"black",20)
+    for index, xVectorTextEntry in enumerate(xVectorTextEntrys):
+        drawText(background,"Vector "+str(index+1),(xVectorTextEntry.rect.left-50,xVectorTextEntry.rect.centery),colours[index % len(colours)])
+    #Write above the entry boxes
+    drawText(background,"x",(xVectorTextEntrys[0].rect.centerx,xVectorTextEntrys[0].rect.top-10),"black",15)
+    drawText(background,"y",(yVectorTextEntrys[0].rect.centerx,yVectorTextEntrys[0].rect.top-10),"black",15) 
+    drawText(background,"Magnitude",(magnitudeTextEntrys[0].rect.centerx,magnitudeTextEntrys[0].rect.top-10),"black",15)
+    drawText(background,"Angle (Degrees)",(angleTextEntrys[0].rect.centerx,angleTextEntrys[0].rect.top-10),"black",15)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
@@ -85,7 +91,11 @@ while is_running:
                         vector = (float(xVectorTextEntrys[i].get_text()),float(yVectorTextEntrys[i].get_text()))
                         if vector != (0,0):
                             magnitudeTextEntrys[i].set_text(str(round(getMagnitude(vector),4)))
-                            angleTextEntrys[i].set_text(str(round(degrees(getVectorAngle(vector)),4)))
+                            vectorAngle = getVectorAngle(vector)
+                            if (vectorAngle < 0) and (not showNegativeAngles):
+                                angleTextEntrys[i].set_text(str(round(degrees(vectorAngle)+360,4)))
+                            else:
+                                angleTextEntrys[i].set_text(str(round(degrees(vectorAngle),4)))
                             vectors.append(vector)
                     except ValueError:
                         pass
@@ -104,14 +114,16 @@ while is_running:
                 scale = scaleVectorAddition(graph.get_width(),(0,0),*vectors)
                 drawGridLines(graph,9,scale)
                 drawAdditionOfVectors(graph,(0,0), 10,*vectors)
+                resultantVector = toAlgebraicForm(addVectors(*vectors),2)
             else:
                 drawGridLines(graph,9)
                 
         manager.process_events(event)
-    #Draw border around graph surface
-    pygame.draw.rect(graph,"black",(0,0,graph.get_width(),graph.get_height()),1)  
     if debug:
         print(pygame.mouse.get_pos())
+    #Draw border around graph surface
+    pygame.draw.rect(graph,"black",(0,0,graph.get_width(),graph.get_height()),1)  
+    drawText(background,resultantVector,(80,300),"black",20)
     manager.update(time_delta)
     window_surface.blit(background, (0, 0))
     window_surface.blit(graph,(175,250))
