@@ -1,6 +1,6 @@
 import pygame, math
 from main import *
-colours = ["red","blue","green","purple","brown","orange","plum","aqua","burlywood","gold"]
+colours = ["red","blue","darkgreen","purple","brown","orange","plum","aqua","burlywood","gold"]
 def drawLine(surface: pygame.Surface, color,startPos,endPos,width: int = -1):
     """
     Draws a line with postition relative to the centre of the screen
@@ -119,12 +119,12 @@ def drawGridScale(surface: pygame.Surface, density, scale: float=1/50):
             drawText(surface,str(round(xPos*scale,1)),(xPos+surfaceWidth/2,(surfaceWidth/2)+10),"blue",10)
         if xPos not in (0,surfaceHeight/2,-surfaceHeight/2):
             drawText(surface,str(round(-yPos*scale,1)),((surfaceHeight/2)-15,yPos+surfaceHeight/2),"blue",10)
-def drawText(surface: pygame.Surface, text: str, centre, color, fontSize: int = 25):
+def drawText(surface: pygame.Surface, text: str, centre, color, fontSize: int = 25, fontName: str = 'Arial'):
     """
-    Draws text with specified color and font size. PyGame coordinate system is used rather than cartesian coordinates. (The point (0,0) gives the top-left corner rather than the centre)
+    Draws text with specified color and font. Pygame coordinate system is used rather than cartesian coordinates. (The point (0,0) gives the top-left corner rather than the centre)
     """
-    arialFont = pygame.font.SysFont('Arial',fontSize)
-    text = arialFont.render(text, True, color)
+    font = pygame.font.SysFont(fontName,fontSize)
+    text = font.render(text, True, color)
     textRect = text.get_rect()
     textRect.center = centre
     surface.blit(text,textRect)

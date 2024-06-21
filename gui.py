@@ -1,5 +1,6 @@
 import pygame
 import pygame_gui
+import csv
 from main import *
 from graphs import *
 
@@ -27,7 +28,15 @@ clock = pygame.time.Clock()
 is_running = True
 debug = False
 showNegativeAngles = False
+vectors =[]
+loadedVectors = False
 
+loadVectorsButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 280), (100, 50)),
+                                            text='Load Vectors',
+                                            manager=manager)
+saveVectorsButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 350), (100, 50)),
+                                            text='Save Vectors',
+                                            manager=manager)
 numberOfTextEntrys = 6
 xVectorTextEntrys = []
 yVectorTextEntrys = []
@@ -62,12 +71,11 @@ for i in range(numberOfTextEntrys):
 
 
 
-
-
 while is_running:
     #Limit FPS to 60
     time_delta = clock.tick(60)/1000
     background.fill(pygame.Color('#FFFFFF'))
+    drawText(background,"Vector Calculator",(750/2,10),"black",25,'Helvetica')
     drawText(background,"Resultant Vector:",(80,250),"black",20)
     for index, xVectorTextEntry in enumerate(xVectorTextEntrys):
         drawText(background,"Vector "+str(index+1),(xVectorTextEntry.rect.left-50,xVectorTextEntry.rect.centery),colours[index % len(colours)])
@@ -79,12 +87,39 @@ while is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
-        if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED:
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+            if event.ui_element == saveVectorsButton:
+                if vectors != []:
+                    with open('savedvectors.csv', 'w',newline='') as savedVectors:
+                        csvFile = csv.writer(savedVectors)
+                        csvFile.writerows(vectors)
+            elif event.ui_element == loadVectorsButton:
+                vectors = []
+                try:
+                    with open('savedvectors.csv', 'r',newline='') as savedVectors:
+                        csvFile = csv.reader(savedVectors)
+                        for row in csvFile:
+                            if row != []:
+                                vectors.append((row[0],row[1]))
+                        #clear GUI input fields
+                        for i in range(numberOfTextEntrys):
+                            xVectorTextEntrys[i].set_text('')
+                            yVectorTextEntrys[i].set_text('')
+                            magnitudeTextEntrys[i].set_text('')
+                            angleTextEntrys[i].set_text('')
+                        for index, vector in enumerate(vectors):
+                            if vector != (0,0):
+                                xVectorTextEntrys[index].set_text(str((vector[0])))
+                                yVectorTextEntrys[index].set_text(str((vector[1])))
+                        loadedVectors = True
+                except FileNotFoundError:
+                    pass
+        if (event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED) or (loadedVectors):
             graph.fill(pygame.Color('#FFFFFF'))
             drawAxes(graph,(0,0),2)
             vectors = []
             #Get user's input values
-            if (event.ui_element in xVectorTextEntrys) or (event.ui_element in yVectorTextEntrys):
+            if (event.ui_element in xVectorTextEntrys) or (event.ui_element in yVectorTextEntrys) or (loadedVectors):
                 for i in range(numberOfTextEntrys):
                     #Handle empty boxes
                     try:
@@ -117,6 +152,7 @@ while is_running:
                 resultantVector = toAlgebraicForm(addVectors(*vectors),2)
             else:
                 drawGridLines(graph,9)
+            loadedVectors = False
                 
         manager.process_events(event)
     if debug:
