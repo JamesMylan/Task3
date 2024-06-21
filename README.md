@@ -1,5 +1,5 @@
 # Vector Calculator
-![Screenshot of GUI](https://www.dropbox.com/scl/fi/x6y89cef1n559ekz7nv78/image1.png?rlkey=3zegmfk17ym12u1wz0e0ch1i6&e=1&st=5fo28y4x&dl=1)
+![Screenshot of GUI](./Docs/ReadmeImage.png)
 By James Mylan
 ## Project Description
 This program allows for the addition of up to six 2-dimensional vectors, entered in eithier x-y coordinate form or magnitude-angle form. It calculates the resultant vector and displays it algebraically, as well as displaying a graphical representation on the Cartesian plane. This application can be used as a tool in solving problems involving vectors from fields such as Mathematics and Physics. The program is codede in Python and utilises the Pygame and Pygame-GUI libraries.
