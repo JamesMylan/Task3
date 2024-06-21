@@ -1,3 +1,4 @@
+#Refer to 'Docs/guiTestGraphs.py Expected Output.pdf' to check output of tests
 from main import *
 from graphs import *
 #Change function here
