@@ -23,3 +23,9 @@ python gui.py
 ```
 ## Instructions for Use
 There are two grouped fields, the fields labelled "x" and "y", and the fields labelled "Magnitude" and "Angle (Degrees)". Any real numbers can be entered into any of the fields, and convesion will occur between the two groups. To the left of the graph is the resultant vector (all the input vectors added together) in algebraic form. To the right are the "Load Vectors" and "Save Vectors" buttons. These will load vectors from 'savedvectors.csv' and save the inputted vectors to the file, respectively. The graph shows each individual vector plotted from the end of the previous vector. The first vector is plotted from the origin. Each vector is colourcoded by the text next to the entry field, and the resultant vector is shown in black and plotted from the origin. The program can be exited by clicking the cross in the window title bar.
+## Tests
+To run the automated unittests, the pytest module must be installed. Then simply run
+```
+pytest
+```
+in the project directory.
