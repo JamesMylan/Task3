@@ -43,6 +43,9 @@ def getMagnitude(vector: tuple):
     magnitude = math.sqrt((vector[0])**2+(vector[1])**2)
     return magnitude
 def getVectorAngle(vector:tuple):
+    """
+    Takes a single vector and returns the angle of the vector in radians. Output has a range of -pi/2 to pi/2
+    """
     #Inverse tan (math.atan) only has a range of 180°, rather than 360°. Therefore, vectors in quadrants 2 or 3 must have an angle of pi subtracted from or added to them.
     if vector[0] > 0:
         vectorAngle = math.atan(vector[1]/vector[0])
